@@ -2,17 +2,21 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { AnimatePresence, motion } from "motion/react";
+import Link from "next/link";
+import { AnimatePresence, animate, motion, useInView } from "motion/react";
 import {
   ArrowRight,
   BarChart3,
+  Bot,
   Camera,
   Check,
+  ChevronLeft,
   ChevronRight,
   Cpu,
+  Database,
   Gauge,
   Leaf,
-  Menu,
+  Loader2,
   MonitorDot,
   ParkingCircle,
   Plus,
@@ -21,10 +25,14 @@ import {
   ShieldCheck,
   Ticket,
   TrafficCone,
-  Truck,
-  UserCheck,
+  TrendingUp,
+  Car,
   X,
 } from "lucide-react";
+import ItalyMap from "./components/ItalyMap";
+import ScrollToTopButton from "./components/ScrollToTopButton";
+import SiteFooter from "./components/SiteFooter";
+import SiteHeader from "./components/SiteHeader";
 
 type SolutionDetail = {
   heading?: string;
@@ -41,6 +49,69 @@ type Solution = {
 };
 
 const solutions: Solution[] = [
+   {
+    icon: BarChart3,
+    title: "Statistiche & Reporting",
+    detail: {
+      heading: "Statistiche & Reporting",
+      paragraphs: [
+        "K-City sviluppa strumenti di statistica e reporting per trasformare i dati raccolti dai sistemi di mobilità in informazioni chiare e facilmente consultabili.",
+      ],
+      listTitle: "Le principali funzionalità comprendono",
+      points: [
+        "Dashboard personalizzate",
+        "Report periodici e riepilogativi",
+        "Analisi delle performance dei servizi",
+        "Confronto dei dati nel tempo",
+        "Visualizzazione di indicatori e trend",
+        "Supporto alle attività di monitoraggio",
+      ],
+      closing:
+        "L’obiettivo è offrire alle Amministrazioni una lettura immediata e strutturata dei dati utili alla gestione del territorio.",
+    },
+  },
+  {
+    icon: Database,
+    title: "Analisi Dati",
+    detail: {
+      heading: "Analisi Dati",
+      paragraphs: [
+        "K-City integra strumenti di Data Analysis per organizzare, elaborare e interpretare i dati provenienti dai diversi sistemi urbani.",
+      ],
+      listTitle: "Le principali attività comprendono",
+      points: [
+        "Raccolta e integrazione dei dati",
+        "Elaborazione delle informazioni",
+        "Analisi dei comportamenti e dei fenomeni urbani",
+        "Individuazione di trend e criticità",
+        "Correlazione tra diverse fonti informative",
+        "Supporto alle decisioni operative e strategiche",
+      ],
+      closing:
+        "I dati diventano così uno strumento concreto per migliorare l’efficienza dei servizi e la pianificazione urbana.",
+    },
+  },
+  {
+    icon: TrendingUp,
+    title: "Analisi Predittive",
+    detail: {
+      heading: "Analisi Predittive",
+      paragraphs: [
+        "K-City utilizza modelli di analisi predittiva per anticipare l’evoluzione di fenomeni legati alla mobilità e alla gestione urbana.",
+      ],
+      listTitle: "Le soluzioni consentono di",
+      points: [
+        "Individuare tendenze ricorrenti",
+        "Prevedere variazioni dei flussi di traffico",
+        "Stimare la domanda di sosta",
+        "Identificare possibili criticità",
+        "Supportare la pianificazione degli interventi",
+        "Migliorare l’allocazione delle risorse",
+      ],
+      closing:
+        "L’obiettivo è passare da una gestione reattiva a una gestione più preventiva e consapevole del territorio.",
+    },
+  },
   {
     icon: ParkingCircle,
     title: "Smart Parking",
@@ -125,6 +196,27 @@ const solutions: Solution[] = [
         "I dati diventano così uno strumento concreto per progettare una mobilità più efficiente e sostenibile.",
     },
   },
+   {
+    icon: Bot,
+    title: "Chatbot AI",
+    detail: {
+      heading: "Chatbot AI",
+      paragraphs: [
+        "K-City sviluppa Chatbot basati su Intelligenza Artificiale per migliorare l’accesso alle informazioni e semplificare il rapporto tra cittadini, operatori e Amministrazioni.",
+      ],
+      listTitle: "I chatbot possono essere utilizzati per",
+      points: [
+        "Fornire informazioni sui servizi",
+        "Rispondere alle domande più frequenti",
+        "Guidare l’utente nelle procedure",
+        "Supportare la consultazione di tariffe e regolamenti",
+        "Fornire assistenza automatizzata",
+        "Alleggerire il carico degli uffici e dei canali tradizionali",
+      ],
+      closing:
+        "Una soluzione disponibile in modo continuativo per rendere i servizi digitali più accessibili, semplici e immediati.",
+    },
+  },
   {
     icon: TrafficCone,
     title: "ZTL & Accessi",
@@ -171,28 +263,6 @@ const solutions: Solution[] = [
     },
   },
   {
-    icon: Truck,
-    title: "Rimozione forzata",
-    detail: {
-      heading: "Rimozione Forzata",
-      paragraphs: [
-        "K-City supporta la gestione del servizio di rimozione forzata dei veicoli, contribuendo al mantenimento della sicurezza e della corretta fruizione degli spazi pubblici.",
-        "Il servizio può essere coordinato con le attività di controllo della sosta e con gli altri sistemi di gestione della mobilità.",
-      ],
-      listTitle: "Le principali attività comprendono",
-      points: [
-        "Supporto alla gestione degli interventi di rimozione",
-        "Coordinamento operativo del servizio",
-        "Gestione dei veicoli rimossi",
-        "Monitoraggio degli interventi",
-        "Registrazione delle operazioni effettuate",
-        "Supporto alle Amministrazioni e agli organi competenti",
-      ],
-      closing:
-        "Una gestione organizzata del servizio contribuisce a mantenere libere e sicure le aree destinate alla circolazione e alla sosta.",
-    },
-  },
-  {
     icon: Gauge,
     title: "Rilevatori di velocità",
     detail: {
@@ -216,157 +286,274 @@ const solutions: Solution[] = [
   },
   {
     icon: Ticket,
-    title: "Parcometri",
+    title: "Gestione Contravvenzioni",
     detail: {
       paragraphs: [
-        "K-City fornisce soluzioni tecnologiche per la gestione della sosta a pagamento attraverso parcometri di nuova generazione, integrabili con sistemi digitali e piattaforme di controllo.",
-        "I dispositivi possono essere configurati in funzione delle esigenze dell’Amministrazione e delle caratteristiche delle singole aree di sosta.",
+        "K-City offre un servizio integrato per la gestione delle contravvenzioni, supportando Enti Pubblici e Polizie Locali in tutte le principali fasi del procedimento sanzionatorio.",
       ],
-      listTitle: "Tra le principali funzionalità",
+      listTitle: "Il servizio comprende",
       points: [
-        "Pagamento della sosta",
-        "Gestione delle tariffe",
-        "Controllo remoto dei dispositivi",
-        "Monitoraggio dello stato dei parcometri",
-        "Raccolta dei dati relativi alle transazioni",
-        "Integrazione con applicazioni e sistemi di pagamento digitale",
-        "Supporto alla manutenzione",
+        "Inserimento e gestione dei dati",
+        "Digitalizzazione e archiviazione degli atti",
+        "Predisposizione e notifica dei verbali",
+        "Notifiche tramite posta, PEC e piattaforma SEND",
+        "Acquisizione degli esiti di notifica",
+        "Aggiornamento e tracciabilità delle pratiche",
+        "Supporto operativo agli uffici competenti",
       ],
       closing:
-        "L’obiettivo è rendere il pagamento e la gestione della sosta più semplici, affidabili e digitali.",
-    },
-  },
-  {
-    icon: MonitorDot,
-    title: "Pannelli a messaggio variabile",
-    detail: {
-      heading: "Pannelli a Messaggio Variabile",
-      paragraphs: [
-        "K-City integra pannelli a messaggio variabile per fornire agli utenti informazioni aggiornate sulla mobilità e sulle condizioni della viabilità.",
-        "I pannelli possono essere collegati alle piattaforme di gestione e aggiornati da remoto sulla base delle esigenze operative.",
-      ],
-      listTitle: "Possono essere utilizzati per comunicare",
-      points: [
-        "Disponibilità dei parcheggi",
-        "Informazioni sul traffico",
-        "Modifiche alla viabilità",
-        "Deviazioni e chiusure stradali",
-        "Eventi o situazioni temporanee",
-        "Messaggi di pubblica utilità",
-      ],
-      closing:
-        "La comunicazione in tempo reale contribuisce a migliorare l’orientamento degli utenti e la gestione dei flussi di traffico.",
-    },
-  },
-  {
-    icon: UserCheck,
-    title: "Ausiliari della sosta",
-    detail: {
-      heading: "Ausiliari della Sosta",
-      paragraphs: [
-        "K-City svolge il servizio di controllo della sosta attraverso personale selezionato sul territorio e specificamente formato per garantire professionalità, efficienza e correttezza nello svolgimento delle attività.",
-        "Gli operatori, previa acquisizione della qualifica di Accertatori della Sosta, ai sensi dell’art. 17, comma 132, della Legge 15 maggio 1997 n. 127 e successive modifiche, vengono preparati attraverso percorsi di formazione dedicati e attività di affiancamento con i responsabili di commessa.",
-        "La formazione viene costantemente aggiornata per assicurare una corretta applicazione delle procedure e un servizio efficace nei confronti dell’utenza e delle Amministrazioni.",
-      ],
-      listTitle: "Tra le principali attività svolte rientrano",
-      points: [
-        "Controllo della regolarità della sosta nelle aree affidate",
-        "Contrasto alla sosta e alla fermata non consentite",
-        "Controllo delle aree e degli stalli riservati alle persone con disabilità",
-        "Supporto al corretto utilizzo degli spazi destinati alla sosta",
-        "Presidio e monitoraggio delle aree assegnate",
-      ],
+        "Grazie all’integrazione tra software, servizi digitali e personale specializzato, K-City consente di semplificare le procedure, ridurre i tempi di gestione e garantire maggiore controllo sull’intero ciclo sanzionatorio.",
     },
   },
 ];
 
-const cities = [
-  "Napoli",
-  "Benevento",
-  "Avellino",
-  "Caserta",
-  "Matera",
-  "Messina",
-  "Ischia",
-  "Ercolano",
+const territoryRegions = [
+  {
+    region: "Campania",
+    cities: [
+      "Napoli",
+      "Avellino",
+      "Benevento",
+      "Caserta",
+      "Atrani",
+      "Bacoli",
+      "Cardito",
+      "Castellammare di Stabia",
+      "Ercolano",
+      "Giugliano in Campania",
+      "Maiori",
+      "Minori",
+      "Portici",
+      "Quarto",
+      "San Giorgio a Cremano",
+      "San Giuseppe Vesuviano",
+      "San Marzano sul Sarno",
+      "Sant'Anastasia",
+      "Volla",
+      "Vesuvio",
+    ],
+  },
+  {
+    region: "Lazio",
+    cities: [
+      "Latina",
+      "Anguillara Sabazia",
+      "Bracciano",
+      "Civita Castellana",
+      "Formello",
+      "Frascati",
+    ],
+  },
+  {
+    region: "Puglia",
+    cities: ["Manduria", "Maruggio", "Oria", "Torricella"],
+  },
+  {
+    region: "Lombardia",
+    cities: ["Mantova", "Angera", "Saronno", "Pero"],
+  },
+  {
+    region: "Sicilia",
+    cities: ["Messina", "Oliveri"],
+  },
+  {
+    region: "Sardegna",
+    cities: ["Golfo degli Aranci", "Isola Rossa"],
+  },
+  {
+    region: "Basilicata",
+    cities: ["Matera"],
+  },
+  {
+    region: "Toscana",
+    cities: ["Monte Argentario"],
+  },
 ];
 
-const certifications = ["ISO 9001", "ISO 14001", "ISO 27001"];
+const cities = territoryRegions.flatMap((r) => r.cities);
+
+const territoryHighlights = [
+  {
+    icon: ParkingCircle,
+    title: "Smart Parking",
+    description: "Soluzioni digitali per la sosta.",
+  },
+  {
+    icon: Car,
+    title: "ZTL & Accessi",
+    description: "Controllo e gestione degli accessi.",
+  },
+  {
+    icon: BarChart3,
+    title: "Mobilità urbana",
+    description: "Dati e tecnologie per città più smart.",
+  },
+];
+
+const certifications = [
+  { name: "ISO 9001", logo: "/certifications/iso-9001.png" },
+  { name: "ISO 14001", logo: "/certifications/iso-14001.png" },
+  { name: "ISO 27001:2022", logo: "/certifications/iso-27001.png" },
+  {
+    name: "ACN Cloud Marketplace",
+    logo: "/certifications/acn.png",
+    href: "https://www.acn.gov.it/portale/w/sa-6284",
+  },
+  { name: "AGCM Rating Legalità", logo: "/certifications/agcm.png" },
+];
+
+type FormStatus = "idle" | "sending" | "sent" | "error";
+
+function ContactForm() {
+  const [status, setStatus] = useState<FormStatus>("idle");
+  const [values, setValues] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!values.name || !values.email || !values.message) {
+      setStatus("error");
+      return;
+    }
+
+    setStatus("sending");
+
+    const subject = `Richiesta informazioni da ${values.name}`;
+    const bodyLines = [
+      `Nome: ${values.name}`,
+      `Email: ${values.email}`,
+      "",
+      values.message,
+    ];
+
+    const mailtoUrl = `mailto:supporto@k-city.it?subject=${encodeURIComponent(
+      subject
+    )}&body=${encodeURIComponent(bodyLines.join("\n"))}`;
+
+    window.location.href = mailtoUrl;
+    setStatus("sent");
+  };
+
+  const inputClasses =
+    "w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-cyan-400 focus:bg-white focus:ring-2 focus:ring-cyan-400/30";
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div>
+          <label
+            htmlFor="name"
+            className="mb-1.5 block text-xs font-bold uppercase tracking-[0.08em] text-slate-500"
+          >
+            Nome e cognome *
+          </label>
+          <input
+            id="name"
+            name="name"
+            type="text"
+            required
+            value={values.name}
+            onChange={handleChange}
+            placeholder="Mario Rossi"
+            className={inputClasses}
+          />
+        </div>
+
+        <div>
+          <label
+            htmlFor="email"
+            className="mb-1.5 block text-xs font-bold uppercase tracking-[0.08em] text-slate-500"
+          >
+            Email *
+          </label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            required
+            value={values.email}
+            onChange={handleChange}
+            placeholder="mario.rossi@comune.it"
+            className={inputClasses}
+          />
+        </div>
+      </div>
+
+      <div>
+        <label
+          htmlFor="message"
+          className="mb-1.5 block text-xs font-bold uppercase tracking-[0.08em] text-slate-500"
+        >
+          Messaggio *
+        </label>
+        <textarea
+          id="message"
+          name="message"
+          required
+          rows={4}
+          value={values.message}
+          onChange={handleChange}
+          placeholder="Raccontaci il tuo progetto o la tua richiesta..."
+          className={`${inputClasses} resize-none`}
+        />
+      </div>
+
+      {status === "error" && (
+        <p className="text-sm font-semibold text-red-600">
+          Compila i campi obbligatori (nome, email e messaggio) prima di
+          inviare.
+        </p>
+      )}
+
+      {status === "sent" && (
+        <p className="text-sm font-semibold text-emerald-600">
+          Si è aperto il tuo client email con la richiesta pre-compilata:
+          conferma l&rsquo;invio da lì per raggiungerci.
+        </p>
+      )}
+
+      <button
+        type="submit"
+        disabled={status === "sending"}
+        className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#06131f] px-7 py-4 text-sm font-bold text-white transition hover:scale-[1.01] disabled:opacity-60 sm:w-auto"
+      >
+        {status === "sending" ? (
+          <>
+            <Loader2 size={18} className="animate-spin" />
+            Invio in corso...
+          </>
+        ) : (
+          <>
+            Invia richiesta
+            <ArrowRight size={18} />
+          </>
+        )}
+      </button>
+    </form>
+  );
+}
 
 export default function Home() {
-  const [menuOpen, setMenuOpen] = useState(false);
   const [selected, setSelected] = useState<Solution | null>(null);
+  const tickerRef = useRef<HTMLDivElement>(null);
+
+  const scrollTicker = (direction: 1 | -1) => {
+    tickerRef.current?.scrollBy({ left: direction * 320, behavior: "smooth" });
+  };
 
   return (
     <main className="min-h-screen bg-white text-slate-950">
-      {/* HEADER */}
-      <header className="fixed left-0 right-0 top-0 z-50 border-b border-slate-200 bg-white">
-        <div className="mx-auto flex h-[76px] max-w-7xl items-center justify-between px-6 lg:px-8">
-          <a href="#" aria-label="K-City — home">
-            <Image
-              src="/brand/k-city-logo.svg"
-              alt="K-City"
-              width={150}
-              height={44}
-              priority
-              className="h-11 w-auto"
-            />
-          </a>
-
-          <nav className="hidden items-center gap-8 lg:flex">
-            <a className="nav-link" href="#azienda">
-              Azienda
-            </a>
-            <a className="nav-link" href="#soluzioni">
-              Soluzioni
-            </a>
-            <a className="nav-link" href="#tecnologia">
-              Tecnologia
-            </a>
-            <a className="nav-link" href="#progetti">
-              Progetti
-            </a>
-
-            <a
-              href="#contatti"
-              className="rounded-full bg-cyan-400 px-5 py-2.5 text-sm font-bold text-[#06131f] transition hover:bg-cyan-300"
-            >
-              Contattaci
-            </a>
-          </nav>
-
-          <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="text-slate-900 lg:hidden"
-            aria-label="Apri menu"
-          >
-            {menuOpen ? <X size={28} /> : <Menu size={28} />}
-          </button>
-        </div>
-
-        {menuOpen && (
-          <div className="border-t border-slate-200 bg-white px-6 py-6 lg:hidden">
-            <div className="flex flex-col gap-5">
-              {[
-                ["Azienda", "#azienda"],
-                ["Soluzioni", "#soluzioni"],
-                ["Tecnologia", "#tecnologia"],
-                ["Progetti", "#progetti"],
-                ["Contatti", "#contatti"],
-              ].map(([label, link]) => (
-                <a
-                  key={label}
-                  href={link}
-                  onClick={() => setMenuOpen(false)}
-                  className="text-lg font-medium text-slate-900"
-                >
-                  {label}
-                </a>
-              ))}
-            </div>
-          </div>
-        )}
-      </header>
+      <SiteHeader />
 
       {/* HERO */}
       <section className="hero-grid relative min-h-screen overflow-hidden bg-[#06131f] pt-[76px] text-white">
@@ -445,61 +632,96 @@ export default function Home() {
             <div className="absolute -inset-8 rounded-full bg-cyan-400/10 blur-3xl" />
 
             <div className="relative overflow-hidden rounded-[30px] border border-white/10 bg-white/[0.07] p-4 shadow-2xl backdrop-blur-xl">
-              <div className="rounded-[22px] bg-[#0b1d2b] p-5 sm:p-7">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
-                      K-City Platform
-                    </p>
-                    <p className="mt-1 font-bold text-white">
-                      Urban Mobility Dashboard
-                    </p>
+              <div className="relative min-h-[600px] overflow-hidden rounded-[22px] bg-[#0b1d2b]">
+                <Image
+                  src="/dashboard/heatmap-source.png"
+                  alt="Mappa reale K-City con disponibilità posti e zone ad alta intensità"
+                  fill
+                  className="object-cover"
+                  style={{
+                    filter:
+                      "grayscale(0.1) brightness(0.5) contrast(1.3) saturate(1.6)",
+                  }}
+                />
+                <div className="absolute inset-0 bg-[#052235]/40 mix-blend-multiply" />
+
+                <div className="pointer-events-none absolute inset-x-0 top-0 h-[230px] bg-gradient-to-b from-[#0b1d2b] via-[#0b1d2b]/75 to-transparent" />
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[160px] bg-gradient-to-t from-[#0b1d2b] via-[#0b1d2b]/40 to-transparent" />
+
+                <div className="relative p-5 sm:p-7">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
+                        K-City Platform
+                      </p>
+                      <p className="mt-1 font-bold text-white">
+                        Urban Mobility Dashboard
+                      </p>
+                    </div>
+
+                    <div className="flex items-center gap-2 rounded-full bg-emerald-400/10 px-3 py-1.5 text-xs font-medium text-emerald-300">
+                      <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-300" />
+                      Live
+                    </div>
                   </div>
 
-                  <div className="flex items-center gap-2 rounded-full bg-emerald-400/10 px-3 py-1.5 text-xs font-medium text-emerald-300">
-                    <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-300" />
-                    Live
+                  <div className="mt-6 grid grid-cols-2 gap-3">
+                    <DashboardCard
+                      icon={<ParkingCircle size={19} />}
+                      label="Smart Parking"
+                      value="Live"
+                    />
+                    <DashboardCard
+                      icon={<Camera size={19} />}
+                      label="AI Cameras"
+                      value="Active"
+                    />
+                    <DashboardCard
+                      icon={<RadioTower size={19} />}
+                      label="IoT Network"
+                      value="Online"
+                    />
+                    <DashboardCard
+                      icon={<BarChart3 size={19} />}
+                      label="Analytics"
+                      value="Real time"
+                    />
                   </div>
                 </div>
 
-                <div className="mt-8 grid grid-cols-2 gap-3">
-                  <DashboardCard
-                    icon={<ParkingCircle size={19} />}
-                    label="Smart Parking"
-                    value="Live"
-                  />
-                  <DashboardCard
-                    icon={<Camera size={19} />}
-                    label="AI Cameras"
-                    value="Active"
-                  />
-                  <DashboardCard
-                    icon={<RadioTower size={19} />}
-                    label="IoT Network"
-                    value="Online"
-                  />
-                  <DashboardCard
-                    icon={<BarChart3 size={19} />}
-                    label="Analytics"
-                    value="Real time"
-                  />
-                </div>
+                <div className="absolute inset-x-5 bottom-5 sm:inset-x-7 sm:bottom-7">
+                  {/* <div className="rounded-2xl border border-white/10 bg-[#0b1d2b]/85 p-4 backdrop-blur-md">
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-3">
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-cyan-300/30 text-cyan-300">
+                          <ParkingCircle size={18} />
+                        </div>
+                        <div>
+                          <p className="text-sm font-bold text-white">
+                            San Giuseppe Vesuviano
+                          </p>
+                          <p className="text-xs text-slate-400">
+                            Zona Via Piave
+                          </p>
+                        </div>
+                      </div>
+                      <p className="text-sm font-bold text-emerald-300">82%</p>
+                    </div>
 
-                <div className="relative mt-4 h-52 overflow-hidden rounded-2xl border border-white/5 bg-[#071722]">
-                  <div className="city-map-lines" />
+                    <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-white/10">
+                      <div className="h-full w-[82%] rounded-full bg-gradient-to-r from-cyan-400 to-emerald-400" />
+                    </div>
+                  </div> */}
 
-                  <div className="absolute left-[20%] top-[40%] h-3 w-3 rounded-full bg-cyan-300 shadow-[0_0_20px_rgba(103,232,249,.8)]" />
-                  <div className="absolute left-[62%] top-[25%] h-3 w-3 rounded-full bg-cyan-300 shadow-[0_0_20px_rgba(103,232,249,.8)]" />
-                  <div className="absolute left-[75%] top-[65%] h-3 w-3 rounded-full bg-emerald-300 shadow-[0_0_20px_rgba(110,231,183,.8)]" />
-                  <div className="absolute left-[38%] top-[70%] h-2.5 w-2.5 rounded-full bg-cyan-300" />
-
-                  <div className="absolute bottom-4 left-4 rounded-xl border border-white/10 bg-[#0c2232]/90 px-4 py-3 backdrop-blur">
-                    <p className="text-[10px] uppercase tracking-widest text-slate-500">
-                      Network
-                    </p>
-                    <p className="mt-1 text-sm font-bold text-white">
-                      Connected City
-                    </p>
+                  <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-slate-400">
+                    <span className="flex items-center gap-1.5">
+                      <span className="h-2 w-2 rounded-full bg-emerald-400" />
+                      Disponibile
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <span className="h-2 w-2 rounded-full bg-red-400" />
+                      Alta intensità
+                    </span>
                   </div>
                 </div>
               </div>
@@ -511,13 +733,19 @@ export default function Home() {
       </section>
 
       {/* STATS */}
-      <section className="border-b border-slate-200 bg-white">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 divide-y divide-slate-200 px-6 sm:grid-cols-3 sm:divide-x sm:divide-y-0 lg:px-8">
+      {/* <section className="border-b border-slate-200 bg-white">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="mx-auto grid max-w-7xl grid-cols-1 divide-y divide-slate-200 px-6 sm:grid-cols-3 sm:divide-x sm:divide-y-0 lg:px-8"
+        >
           <Stat value="137" label="Paesi abilitati" />
           <Stat value="99,8%" label="Affidabilità dichiarata" />
           <Stat value="10 anni" label="Lifetime sensori" />
-        </div>
-      </section>
+        </motion.div>
+      </section> */}
 
       {/* AZIENDA */}
       <section id="azienda" className="scroll-mt-24 py-24 lg:py-32">
@@ -550,26 +778,43 @@ export default function Home() {
             transition={{ delay: 0.1 }}
           >
             <p className="text-lg leading-8 text-slate-600">
-              K-City sviluppa hardware e software per l&apos;implementazione di
-              sistemi IoT dedicati al controllo delle aree di sosta, della
-              viabilità e dei flussi veicolari.
+             K-City sviluppa soluzioni hardware e software per la mobilità urbana e le Smart Cities, unendo una consolidata esperienza nella gestione della sosta alle più moderne tecnologie IoT, Data Analytics e Intelligenza Artificiale.
             </p>
 
             <p className="mt-5 leading-7 text-slate-500">
-              Un&apos;infrastruttura digitale capace di mettere in comunicazione
-              sensori, telecamere, parcometri, sistemi di accesso e strumenti di
-              analisi in un&apos;unica piattaforma.
+             Trasformiamo i dati del territorio in strumenti concreti per migliorare mobilità, sicurezza, sostenibilità e qualità della vita.
             </p>
 
             <a
-              href="#tecnologia"
+              href="/azienda"
               className="mt-7 inline-flex items-center gap-2 font-bold text-slate-950"
             >
-              La nostra tecnologia
+              Scopri K-City
               <ChevronRight size={18} />
             </a>
           </motion.div>
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
+          className="mx-auto mt-14 grid max-w-7xl gap-4 px-6 sm:grid-cols-2 lg:grid-cols-4 lg:px-8"
+        >
+          <TechCard icon={<Cpu size={22} />} value="IoT" label="Connected devices" />
+          <TechCard icon={<Camera size={22} />} value="AI" label="Computer vision" />
+          <TechCard
+            icon={<RadioTower size={22} />}
+            value="LoRaWAN"
+            label="Wireless network"
+          />
+          <TechCard
+            icon={<BarChart3 size={22} />}
+            value="DATA"
+            label="Urban analytics"
+          />
+        </motion.div>
       </section>
 
       {/* SOLUZIONI */}
@@ -578,7 +823,13 @@ export default function Home() {
         className="scroll-mt-20 bg-[#f4f7f9] py-24 lg:py-32"
       >
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="max-w-3xl">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="max-w-3xl"
+          >
             <SectionLabel>Soluzioni</SectionLabel>
 
             <h2 className="mt-5 text-4xl font-black tracking-[-0.035em] sm:text-5xl">
@@ -590,7 +841,7 @@ export default function Home() {
               Soluzioni modulari che trasformano i dati urbani in strumenti
               concreti per amministrazioni, operatori e cittadini.
             </p>
-          </div>
+          </motion.div>
 
           <div className="mt-12 flex flex-wrap justify-center gap-3 sm:gap-4">
             {solutions.map((solution, index) => {
@@ -642,79 +893,16 @@ export default function Home() {
         </div>
       </section>
 
-      {/* TECHNOLOGY */}
-      <section
-        id="tecnologia"
-        className="scroll-mt-20 overflow-hidden bg-[#06131f] py-24 text-white lg:py-32"
-      >
-        <div className="mx-auto grid max-w-7xl gap-16 px-6 lg:grid-cols-2 lg:items-center lg:px-8">
-          <div>
-            <SectionLabel dark>Intelligent Suite</SectionLabel>
-
-            <h2 className="mt-5 text-4xl font-black tracking-[-0.035em] sm:text-5xl">
-              Infinite
-              <span className="block text-cyan-300">possibilities.</span>
-            </h2>
-
-            <p className="mt-6 max-w-xl text-lg leading-8 text-slate-300">
-              Una piattaforma web-based progettata per centralizzare dati,
-              dispositivi e servizi di mobilità urbana.
-            </p>
-
-            <div className="mt-10 grid gap-4 sm:grid-cols-2">
-              {[
-                "Aggiornamento in tempo reale",
-                "Accesso multi-utenza",
-                "Scalabilità",
-                "Analisi dei dati",
-                "Sicurezza",
-                "Integrazione IoT",
-              ].map((item) => (
-                <div key={item} className="flex items-center gap-3">
-                  <div className="flex h-6 w-6 items-center justify-center rounded-full bg-cyan-300/15 text-cyan-300">
-                    <Check size={14} />
-                  </div>
-                  <span className="text-sm text-slate-300">{item}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="relative"
-          >
-            <div className="absolute inset-0 bg-cyan-400/10 blur-[90px]" />
-
-            <div className="relative grid grid-cols-2 gap-4">
-              <TechBox icon={<Cpu />} value="IoT" label="Connected devices" />
-              <TechBox
-                icon={<Camera />}
-                value="AI"
-                label="Computer vision"
-              />
-              <TechBox
-                icon={<RadioTower />}
-                value="LoRaWAN"
-                label="Wireless network"
-              />
-              <TechBox
-                icon={<BarChart3 />}
-                value="DATA"
-                label="Urban analytics"
-              />
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
       {/* PROJECTS */}
-      <section id="progetti" className="scroll-mt-20 py-24 lg:py-32">
+      <section id="progetti" className="scroll-mt-20 bg-white py-24 lg:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="grid gap-12 lg:grid-cols-[.85fr_1.15fr]">
-            <div>
+          <div className="grid gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+            >
               <SectionLabel>Territorio</SectionLabel>
 
               <h2 className="mt-5 text-4xl font-black tracking-[-0.035em] sm:text-5xl">
@@ -726,25 +914,114 @@ export default function Home() {
                 K-City porta tecnologie e soluzioni per la mobilità intelligente
                 in numerosi territori italiani.
               </p>
-            </div>
 
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-              {cities.map((city) => (
-                <div
+              <div className="mt-8 flex flex-wrap items-center gap-6 sm:gap-8">
+                <div>
+                  <div className="text-5xl font-black tracking-tight text-cyan-600">
+                    {cities.length}+
+                  </div>
+                  <p className="mt-1 text-xs font-black uppercase leading-5 tracking-wide text-slate-500">
+                    Città e territori serviti
+                  </p>
+                </div>
+
+                <div className="hidden h-12 w-px bg-slate-300 sm:block" />
+
+                <p className="max-w-[220px] text-sm leading-6 text-slate-600">
+                  Insieme alle amministrazioni locali per città più vivibili,
+                  connesse e sostenibili.
+                </p>
+              </div>
+
+              <div className="mt-8 grid gap-4 sm:grid-cols-3">
+                {territoryHighlights.map((item) => {
+                  const Icon = item.icon;
+
+                  return (
+                    <div
+                      key={item.title}
+                      className="rounded-2xl border border-slate-200 bg-white p-4 transition duration-300 hover:-translate-y-0.5 hover:border-cyan-300 hover:shadow-md"
+                    >
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-cyan-50 text-cyan-600">
+                        <Icon size={18} />
+                      </div>
+
+                      <p className="mt-3 text-sm font-bold text-[#06131f]">
+                        {item.title}
+                      </p>
+                      <p className="mt-1 text-xs leading-5 text-slate-600">
+                        {item.description}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
+              className="relative flex h-[640px] items-center justify-center overflow-hidden rounded-[32px] border border-slate-200 bg-white p-8"
+            >
+              <div className="relative mx-auto h-full w-auto aspect-[610/792.6]">
+                <ItalyMap className="h-full w-full" />
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            className="mt-14 flex items-center gap-4 rounded-full border border-slate-200 bg-white px-4 py-3"
+          >
+            <button
+              onClick={() => scrollTicker(-1)}
+              aria-label="Precedente"
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition hover:border-cyan-300 hover:text-cyan-600"
+            >
+              <ChevronLeft size={18} />
+            </button>
+
+            <div
+              ref={tickerRef}
+              className="no-scrollbar flex flex-1 gap-3 overflow-x-auto scroll-smooth"
+            >
+              {cities.map((city, index) => (
+                <span
                   key={city}
-                  className="flex min-h-28 items-end rounded-2xl border border-slate-200 bg-slate-50 p-5 font-bold transition hover:border-cyan-300 hover:bg-cyan-50"
+                  className="flex shrink-0 items-center gap-3 text-sm font-semibold text-slate-700"
                 >
                   {city}
-                </div>
+                  {index < cities.length - 1 && (
+                    <span className="h-1.5 w-1.5 rounded-full bg-cyan-400" />
+                  )}
+                </span>
               ))}
             </div>
-          </div>
+
+            <button
+              onClick={() => scrollTicker(1)}
+              aria-label="Successivo"
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition hover:border-cyan-300 hover:text-cyan-600"
+            >
+              <ChevronRight size={18} />
+            </button>
+          </motion.div>
         </div>
       </section>
 
       {/* CERTIFICATIONS */}
       <section className="border-y border-slate-200 bg-slate-50 py-14">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-8 px-6 md:flex-row lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-8 px-6 md:flex-row lg:px-8">
           <div className="flex items-center gap-4">
             <ShieldCheck size={34} className="text-cyan-600" />
             <div>
@@ -755,22 +1032,45 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex flex-wrap justify-center gap-3">
-            {certifications.map((certification) => (
-              <span
-                key={certification}
-                className="rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-bold"
-              >
-                {certification}
-              </span>
-            ))}
+          <div className="flex flex-wrap items-center justify-center gap-6">
+            {certifications.map((certification) => {
+              const image = (
+                <Image
+                  src={certification.logo}
+                  alt={certification.name}
+                  fill
+                  className="object-contain"
+                />
+              );
+
+              return certification.href ? (
+                <Link
+                  key={certification.name}
+                  href={certification.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="relative h-20 w-20 transition-opacity hover:opacity-80"
+                >
+                  {image}
+                </Link>
+              ) : (
+                <div key={certification.name} className="relative h-20 w-20">
+                  {image}
+                </div>
+              );
+            })}
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* CTA */}
-      <section id="contatti" className="scroll-mt-20 px-6 py-24 lg:px-8">
-        <div className="mx-auto max-w-7xl overflow-hidden rounded-[36px] bg-cyan-400 px-7 py-16 sm:px-12 lg:px-16 lg:py-20">
+      <section className="px-6 pt-24 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="mx-auto max-w-7xl overflow-hidden rounded-[36px] bg-cyan-400 px-7 py-16 sm:px-12 lg:px-16 lg:py-20">
           <div className="grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end">
             <div>
               <p className="text-sm font-black uppercase tracking-[0.22em] text-[#06131f]/60">
@@ -783,66 +1083,51 @@ export default function Home() {
             </div>
 
             <a
-              href="mailto:supporto@k-city.it"
+              href="#contatti"
               className="inline-flex h-fit items-center justify-center gap-2 rounded-full bg-[#06131f] px-7 py-4 font-bold text-white transition hover:scale-[1.02]"
             >
-              Parliamo del progetto
+              Parlaci del tuo progetto
               <ArrowRight size={18} />
             </a>
           </div>
+        </motion.div>
+      </section>
+
+      {/* CONTATTI */}
+      <section id="contatti" className="scroll-mt-20 px-6 py-24 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="grid gap-12 lg:grid-cols-[0.85fr_1.15fr]">
+            <div>
+              <p className="text-sm font-black uppercase tracking-[0.22em] text-cyan-600">
+                Contatti
+              </p>
+
+              {/* <h2 className="mt-5 text-3xl font-black tracking-[-0.03em] sm:text-4xl">
+                Parliamo del tuo progetto.
+              </h2> */}
+
+              <p className="mt-5 leading-7 text-slate-600">
+                Raccontaci le esigenze della tua Amministrazione o della tua
+                azienda: ti risponderemo il prima possibile per capire come
+                K-City può aiutarti.
+              </p>
+            </div>
+
+            <div className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm sm:p-10">
+              <ContactForm />
+            </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* FOOTER */}
-      <footer className="bg-[#06131f] text-white">
-        <div className="mx-auto max-w-7xl px-6 py-14 lg:px-8">
-          <div className="grid gap-12 md:grid-cols-3">
-            <div>
-              <Image
-                src="/brand/k-city-logo-white-payoff.svg"
-                alt="K-City — your city, your future"
-                width={154}
-                height={45}
-                className="h-11 w-auto"
-              />
-              <p className="mt-5 max-w-xs text-sm leading-6 text-slate-400">
-                Sistemi intelligenti per la mobilità urbana e le Smart Cities.
-              </p>
-            </div>
+      <SiteFooter />
 
-            <div>
-              <p className="text-sm font-bold">K-City Factory</p>
-              <p className="mt-3 text-sm leading-6 text-slate-400">
-                Via Giacomo Leopardi
-                <br />
-                San Sebastiano al Vesuvio (NA)
-                <br />
-                Italia
-              </p>
-            </div>
-
-            <div>
-              <p className="text-sm font-bold">Contatti</p>
-              <a
-                href="mailto:supporto@k-city.it"
-                className="mt-3 block text-sm text-cyan-300"
-              >
-                supporto@k-city.it
-              </a>
-            </div>
-          </div>
-
-          <div className="mt-14 flex flex-col justify-between gap-4 border-t border-white/10 pt-7 text-xs text-slate-500 sm:flex-row">
-            <span>© 2026 K-City S.r.l. — Tutti i diritti riservati.</span>
-
-            <div className="flex gap-5">
-              <a href="#">Privacy Policy</a>
-              <a href="#">Cookie Policy</a>
-              <a href="#">Whistleblowing</a>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <ScrollToTopButton />
 
       <AnimatePresence>
         {selected?.detail && (
@@ -971,11 +1256,54 @@ function SectionLabel({
   );
 }
 
+function parseStatValue(value: string) {
+  const match = value.match(/^([^\d]*)(\d+(?:[.,]\d+)?)(.*)$/);
+
+  if (!match) {
+    return { prefix: "", target: 0, decimals: 0, suffix: value };
+  }
+
+  const [, prefix, numStr, suffix] = match;
+  const decimalMatch = numStr.match(/[.,](\d+)$/);
+  const decimals = decimalMatch ? decimalMatch[1].length : 0;
+  const target = parseFloat(numStr.replace(",", "."));
+
+  return { prefix, target, decimals, suffix };
+}
+
+function formatStatNumber(n: number, decimals: number) {
+  if (decimals > 0) {
+    return n.toFixed(decimals).replace(".", ",");
+  }
+  return Math.round(n).toString();
+}
+
 function Stat({ value, label }: { value: string; label: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const { prefix, target, decimals, suffix } = parseStatValue(value);
+  const [display, setDisplay] = useState(
+    () => prefix + formatStatNumber(0, decimals) + suffix
+  );
+
+  useEffect(() => {
+    if (!isInView) return;
+
+    const controls = animate(0, target, {
+      duration: 1.8,
+      ease: "easeOut",
+      onUpdate: (latest) => {
+        setDisplay(prefix + formatStatNumber(latest, decimals) + suffix);
+      },
+    });
+
+    return () => controls.stop();
+  }, [isInView, target, decimals, prefix, suffix]);
+
   return (
-    <div className="px-6 py-10 text-center">
+    <div ref={ref} className="px-6 py-10 text-center">
       <div className="text-4xl font-black tracking-tight text-[#06131f]">
-        {value}
+        {display}
       </div>
       <div className="mt-2 text-sm font-medium text-slate-500">{label}</div>
     </div>
@@ -992,15 +1320,23 @@ function DashboardCard({
   value: string;
 }) {
   return (
-    <div className="rounded-2xl border border-white/5 bg-white/[0.04] p-4">
-      <div className="text-cyan-300">{icon}</div>
-      <div className="mt-5 text-xs text-slate-500">{label}</div>
-      <div className="mt-1 text-sm font-bold text-white">{value}</div>
+    <div className="rounded-2xl border border-white/10 bg-[#0b1d2b]/70 p-4 backdrop-blur-md">
+      <div className="flex items-center justify-between">
+        <div className="flex h-9 w-9 items-center justify-center rounded-full border border-cyan-300/30 text-cyan-300">
+          {icon}
+        </div>
+        <ChevronRight size={15} className="text-slate-500" />
+      </div>
+      <div className="mt-4 text-xs text-slate-400">{label}</div>
+      <div className="mt-1 flex items-center gap-1.5 text-sm font-bold text-white">
+        <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+        {value}
+      </div>
     </div>
   );
 }
 
-function TechBox({
+function TechCard({
   icon,
   value,
   label,
@@ -1010,10 +1346,12 @@ function TechBox({
   label: string;
 }) {
   return (
-    <div className="rounded-[24px] border border-white/10 bg-white/[0.05] p-6 backdrop-blur">
-      <div className="text-cyan-300">{icon}</div>
-      <div className="mt-10 text-2xl font-black">{value}</div>
-      <div className="mt-1 text-sm text-slate-400">{label}</div>
+    <div className="rounded-2xl border border-slate-200 bg-white p-6 transition duration-300 hover:-translate-y-0.5 hover:border-cyan-300 hover:shadow-md">
+      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#06131f] text-cyan-300">
+        {icon}
+      </div>
+      <div className="mt-5 text-xl font-black text-[#06131f]">{value}</div>
+      <div className="mt-1 text-sm text-slate-500">{label}</div>
     </div>
   );
 }

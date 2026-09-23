@@ -53,6 +53,15 @@ body {
   width: 100%;
 }
 
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 .hero-grid {
   background-image:
     linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
