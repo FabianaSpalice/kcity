@@ -2,6 +2,24 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+## Form contatti
+
+Il form invia a `/api/contact`, che consegna il messaggio tramite SMTP.
+Copia `.env.example` in `.env.local` e compila host, porta, utente, password
+e `CONTACT_FROM` (mittente autorizzato dal provider). Non pubblicare le credenziali.
+`CONTACT_TO` è inizialmente `supporto@k-city.it`.
+La porta 465 usa TLS diretto; le altre porte richiedono STARTTLS.
+Riferimento: https://nodemailer.com/smtp
+
+Configura le stesse variabili nell'hosting e riavvia/ridistribuisci il sito.
+Serve un hosting con runtime Node.js, non un export statico.
+Senza configurazione il form mostra un errore e il contatto email alternativo.
+Dopo la configurazione, verifica la ricezione di una richiesta e la funzione
+Rispondi (deve indirizzare al visitatore). L'esito positivo indica che il server
+SMTP ha accettato il messaggio, non garantisce il recapito nella casella.
+Il campo nascosto filtra bot elementari; configurare sul proprio hosting una
+limitazione delle richieste a `POST /api/contact` prima dell'esposizione pubblica.
+
 First, run the development server:
 
 ```bash

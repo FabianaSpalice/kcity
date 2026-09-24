@@ -406,10 +406,13 @@ type FormStatus = "idle" | "sending" | "sent" | "error";
 
 function ContactForm() {
   const [status, setStatus] = useState<FormStatus>("idle");
+  const [error, setError] = useState("");
+  const submitting = useRef(false);
   const [values, setValues] = useState({
     name: "",
     email: "",
     message: "",
+    website: "",
   });
 
   const handleChange = (
@@ -418,30 +421,30 @@ function ContactForm() {
     setValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!values.name || !values.email || !values.message) {
-      setStatus("error");
-      return;
-    }
-
+    if (submitting.current) return;
+    submitting.current = true;
     setStatus("sending");
-
-    const subject = `Richiesta informazioni da ${values.name}`;
-    const bodyLines = [
-      `Nome: ${values.name}`,
-      `Email: ${values.email}`,
-      "",
-      values.message,
-    ];
-
-    const mailtoUrl = `mailto:supporto@k-city.it?subject=${encodeURIComponent(
-      subject
-    )}&body=${encodeURIComponent(bodyLines.join("\n"))}`;
-
-    window.location.href = mailtoUrl;
-    setStatus("sent");
+    setError("");
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      });
+      const result = await response.json();
+      if (!response.ok || !result.ok) {
+        throw new Error(result.error || "Invio non riuscito. Riprova tra poco.");
+      }
+      setValues({ name: "", email: "", message: "", website: "" });
+      setStatus("sent");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Invio non riuscito. Riprova tra poco.");
+      setStatus("error");
+    } finally {
+      submitting.current = false;
+    }
   };
 
   const inputClasses =
@@ -449,6 +452,10 @@ function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="hidden" aria-hidden="true">
+        <label htmlFor="contact-website">Sito web</label>
+        <input id="contact-website" name="website" tabIndex={-1} autoComplete="off" value={values.website} onChange={handleChange} />
+      </div>
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label
@@ -459,6 +466,9 @@ function ContactForm() {
           </label>
           <input
             id="name"
+            maxLength={120}
+            autoComplete="name"
+            disabled={status === "sending"}
             name="name"
             type="text"
             required
@@ -478,6 +488,9 @@ function ContactForm() {
           </label>
           <input
             id="email"
+            maxLength={254}
+            autoComplete="email"
+            disabled={status === "sending"}
             name="email"
             type="email"
             required
@@ -498,6 +511,8 @@ function ContactForm() {
         </label>
         <textarea
           id="message"
+          maxLength={5000}
+          disabled={status === "sending"}
           name="message"
           required
           rows={4}
@@ -509,16 +524,14 @@ function ContactForm() {
       </div>
 
       {status === "error" && (
-        <p className="text-sm font-semibold text-red-600">
-          Compila i campi obbligatori (nome, email e messaggio) prima di
-          inviare.
+        <p role="alert" className="text-sm font-semibold text-red-600">
+          {error} Puoi anche scriverci a <a href="mailto:supporto@k-city.it" className="underline">supporto@k-city.it</a>.
         </p>
       )}
 
       {status === "sent" && (
-        <p className="text-sm font-semibold text-emerald-600">
-          Si è aperto il tuo client email con la richiesta pre-compilata:
-          conferma l&rsquo;invio da lì per raggiungerci.
+        <p role="status" className="text-sm font-semibold text-emerald-600">
+          La tua richiesta è stata inviata. Ti risponderemo al più presto.
         </p>
       )}
 
