@@ -160,7 +160,7 @@ export function WhistleblowingContent() {
       <LegalSection number="5" title="Ambito di applicazione oggettivo">
         <p>
           Le segnalazioni whistleblowing possono avere a oggetto violazioni
-          delle disposizioni normative nazionali dell&rsquo; Unione europea
+          delle disposizioni normative nazionali dell&rsquo;Unione europea
           che ledono l&rsquo;integrità della società adottante il presente
           protocollo, di cui i soggetti segnalanti siano venuti a conoscenza
           nell&rsquo;ambito di tale contesto lavorativo.
@@ -232,8 +232,7 @@ export function WhistleblowingContent() {
           indirizzo presso il quale intende ricevere le successive
           comunicazioni; la seconda con la segnalazione e copia di eventuali
           documenti a supporto. Le due buste dovranno poi essere inserite in
-          una terza busta chiusa che rechi all&rsquo;esterno l&rsquo;
-          indicazione del destinatario e la dicitura &ldquo;riservata al
+          una terza busta chiusa che rechi all&rsquo;esterno l&rsquo;indicazione del destinatario e la dicitura &ldquo;riservata al
           Gestore whistleblowing&rdquo;.
         </p>
         <p>
@@ -630,8 +629,7 @@ export function WhistleblowingContent() {
           del lavoro, per i provvedimenti di propria competenza.
         </p>
         <p>
-          Inoltre, si segnala che il D. Lgs. n. 24/2023 prevede l&rsquo;
-          applicazione da parte dell&rsquo;ANAC di una sanzione
+          Inoltre, si segnala che il D. Lgs. n. 24/2023 prevede l&rsquo;applicazione da parte dell&rsquo;ANAC di una sanzione
           amministrativa pecuniaria, da 10.000 a 50.000 euro, quando accerta
           che la persona fisica individuata come responsabile abbia
           commesso ritorsioni. Inoltre, il D. lgs. n. 24/2023 prevede alcune
@@ -704,8 +702,7 @@ export function WhistleblowingContent() {
         <p>
           Il Gestore valuta l&rsquo;opportunità e le modalità con cui
           informare il segnalato dell&rsquo;esistenza della segnalazione,
-          nel rispetto degli obblighi di riservatezza rispetto all&rsquo;
-          identità del segnalante e considerata la necessità di non
+          nel rispetto degli obblighi di riservatezza rispetto all&rsquo;identità del segnalante e considerata la necessità di non
           pregiudicare le esigenze di accertamento.
         </p>
         <p>
@@ -784,7 +781,7 @@ export function WhistleblowingContent() {
         </p>
         <NumberedList
           items={[
-            "dati personali comuni, quali, ad esempio, i dati identificativi degli interessati, i dati di contatto del segnalante, i dati relativi al relativo ruolo/mansione lavorativa dell’interessato, i dati contenuti nel documento di identità del segnalante, la voce del segnalante registrata tramite il sistema di messaggistica vocale e/o durante l’incontro diretto richiesto dallo stesso;",
+            "dati personali comuni, quali, ad esempio, i dati identificativi degli interessati, i dati di contatto del segnalante, i dati relativi al ruolo o alla mansione lavorativa dell’interessato, i dati contenuti nel documento di identità del segnalante, la voce del segnalante registrata tramite il sistema di messaggistica vocale e/o durante l’incontro diretto richiesto dallo stesso;",
             "categorie particolari di dati personali di cui all’art. 9 del GDPR, quali, ad esempio, le informazioni relative a condizioni di salute dell’interessato, le opinioni politiche dell’interessato, le convinzioni religiose e l’appartenenza sindacale dell’interessato;",
             "dati personali relativi a condanne penali e reati di cui all’art. 10 del GDPR.",
           ]}
@@ -816,7 +813,7 @@ export function WhistleblowingContent() {
               Titolare (obbligo di istituire un canale di segnalazione ai
               sensi del D. Lgs n. 24/2023); pertanto, ai sensi e per gli
               effetti dell&rsquo;art. 6, par. 1, lett. c) e parr. 2 e 3,
-              dell&rsquo;art. 9, par. 2, lett. b), dell&rsquo;art. art. 10 e
+              dell&rsquo;art. 9, par. 2, lett. b), dell&rsquo;art. 10 e
               dell&rsquo;art. 88 del GDPR, il trattamento non necessita del
               consenso dell&rsquo;interessato;
             </>,
@@ -867,20 +864,19 @@ export function WhistleblowingContent() {
           segnalazioni e appositamente autorizzato al trattamento. Il
           Gestore whistleblowing agisce sulla base di specifiche istruzioni
           fornite da K-City S.r.l. in ordine alle finalità e alle modalità
-          del trattamento e che lo impegna alla riservatezza, alla
+          del trattamento e che lo impegnano alla riservatezza, alla
           confidenzialità e alla sicurezza dei dati.
         </p>
         <p>
           I dati personali potranno essere comunicati a strutture esterne,
           che svolgono per conto di K-City S.r.l., compiti di supporto (es.
           servizi informatici), nella loro qualità di Responsabili del
-          trattamento, cui sono state impartire apposite istruzioni sulle
+          trattamento, cui sono state impartite apposite istruzioni sulle
           modalità e finalità del trattamento e imposti obblighi di
           riservatezza, confidenzialità e sicurezza dei dati.
         </p>
         <p>
-          Ove strettamente necessario ai fini dello svolgimento dell&rsquo;
-          istruttoria delle segnalazioni, i dati personali potranno essere
+          Ove strettamente necessario ai fini dello svolgimento dell&rsquo;istruttoria delle segnalazioni, i dati personali potranno essere
           comunicati a: i) il personale interno di volta in volta
           individuato come competente a supportare le verifiche e
           appositamente autorizzato al trattamento dal membro del Gestore
@@ -926,8 +922,7 @@ export function WhistleblowingContent() {
         </p>
         <p>
           Al termine del periodo di conservazione, i dati personali saranno
-          cancellati o conservati in una forma che non consenta l&rsquo;
-          identificazione dell&rsquo;interessato (es. anonimizzazione
+          cancellati o conservati in una forma che non consenta l&rsquo;identificazione dell&rsquo;interessato (es. anonimizzazione
           irreversibile).
         </p>
 
@@ -958,16 +953,12 @@ export function WhistleblowingContent() {
           interessati coinvolti nella segnalazione (es. segnalati e/o altre
           persone coinvolte e/o menzionate nella segnalazione), qualora
           dall&rsquo;esercizio di tali diritti possa derivare un
-          pregiudizio effettivo e concreto alla riservatezza dell&rsquo;
-          identità del segnalante. In particolare, l&rsquo;esercizio di
+          pregiudizio effettivo e concreto alla riservatezza dell&rsquo;identità del segnalante. In particolare, l&rsquo;esercizio di
           tali diritti potrà essere ritardato, limitato o escluso con
-          comunicazione motivata e resa senza ritardo all&rsquo;
-          interessato, a meno che la comunicazione possa compromettere la
+          comunicazione motivata e resa senza ritardo all&rsquo;interessato, a meno che la comunicazione possa compromettere la
           finalità della limitazione, per il tempo e nei limiti in cui ciò
           costituisca una misura necessaria e proporzionata, tenuto conto
-          dei diritti fondamentali e dei legittimi interessi dell&rsquo;
-          interessato, al fine di salvaguardare la riservatezza dell&rsquo;
-          identità del segnalante. In tali casi, gli interessati potranno
+          dei diritti fondamentali e dei legittimi interessi dell&rsquo;interessato, al fine di salvaguardare la riservatezza dell&rsquo;identità del segnalante. In tali casi, gli interessati potranno
           rivolgersi, con le modalità di cui all&rsquo;art. 160 del Codice
           Privacy, all&rsquo;Autorità Garante per la protezione dei dati
           personali.

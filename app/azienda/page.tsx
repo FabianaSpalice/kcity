@@ -54,7 +54,7 @@ const teamMembers = [
   },
   {
     name: "Sebastiano Spina",
-    role: "Ingegnere Informatico / It Manager",
+    role: "Ingegnere Informatico / IT Manager",
     description:
       "Esperienza pluriennale nello sviluppo software e nel coordinamento di team IT.",
     photo: "/team/sebastiano-spina.jpg",
