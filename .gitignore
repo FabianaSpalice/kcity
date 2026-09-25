@@ -40,3 +40,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# deploy
+/deploy/contact-config.php
+/deploy/ftp.env
+/deploy/diag-*.php
+

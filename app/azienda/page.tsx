@@ -38,7 +38,7 @@ function LinkedinIcon({ size = 15 }: { size?: number }) {
 }
 
 const experienceStats = [
-  { value: "10+ anni", label: "Esperienza nel settore della mobilità" },
+  { value: "20+ anni", label: "Esperienza nel settore della mobilità" },
   { value: "Smart Mobility", label: "Soluzioni integrate per la città" },
   { value: "IoT & AI", label: "Tecnologie connesse e intelligenti" },
   { value: "Data Driven", label: "Decisioni supportate dai dati" },
@@ -49,7 +49,7 @@ const teamMembers = [
     name: "Peppe Morelli",
     role: "CEO",
     description: "Guida la strategia e lo sviluppo di K-City, coordinando innovazione, partnership e crescita aziendale.",
-    photo: "/team/ceo.jpg",
+    photo: "/team/ceo.webp",
     linkedin: "https://www.linkedin.com/in/peppe-morelli-1595a422a/",
   },
   {
@@ -57,7 +57,7 @@ const teamMembers = [
     role: "Ingegnere Informatico / IT Manager",
     description:
       "Esperienza pluriennale nello sviluppo software e nel coordinamento di team IT.",
-    photo: "/team/sebastiano-spina.jpg",
+    photo: "/team/sebastiano-spina.webp",
     linkedin: "https://www.linkedin.com/in/sebastiano-spina-3670a6154/",
     objectPosition: "center",
   },
@@ -66,7 +66,7 @@ const teamMembers = [
     role: "Ingegnere Informatico / Account Manager",
     description:
       "Progettazione e sviluppo di sistemi software, gestione dei rapporti con clienti, partner e Pubblica Amministrazione.",
-    photo: "/team/alessandro-polverino.jpg",
+    photo: "/team/alessandro-polverino.webp",
     linkedin: "https://www.linkedin.com/in/alessandropolverino/",
   },
   {
@@ -74,7 +74,7 @@ const teamMembers = [
     role: "Full Stack Web Developer",
     description:
       "Esperienza nello sviluppo di software e web application, con competenze in linguaggi web, database e framework.",
-    photo: "/team/luca-piccirillo.jpg",
+    photo: "/team/luca-piccirillo.webp",
     linkedin: "https://www.linkedin.com/in/luca-piccirillo-463930232/",
   },
   {
@@ -82,7 +82,7 @@ const teamMembers = [
     role: "Architetto / Web Designer",
     description:
       "Esperienza nel design architettonico e digitale, con competenze in web design, app design e sviluppo.",
-    photo: "/team/fabiana-spalice.png",
+    photo: "/team/fabiana-spalice.webp",
     linkedin: "https://www.linkedin.com/in/fabiana-spalice-aa665a112/",
   },
   {
@@ -90,7 +90,7 @@ const teamMembers = [
     role: "Full Stack Developer",
     description:
       "Full-Stack Developer con competenze in Smart Mobility, IoT, Machine Learning e sistemi real-time.",
-    photo: "/team/matteo-pio-gemmi.jpg",
+    photo: "/team/matteo-pio-gemmi.webp",
     linkedin: "https://www.linkedin.com/in/matteo-pio-gemmi-developer/",
   },
   {
@@ -98,7 +98,7 @@ const teamMembers = [
     role: "Software Developer",
     description:
       "Laureato in Informatica, con competenze nello sviluppo software e nella gestione di sistemi informatici.",
-    photo: "/team/antonio-onorato.jpg",
+    photo: "/team/antonio-onorato.webp",
     linkedin: "https://www.linkedin.com/in/antonio-onorato-48704824b/",
   },
   {
@@ -106,7 +106,7 @@ const teamMembers = [
     role: "Responsabile Area Tecnica",
     description:
       "Responsabile installazioni e manutenzione di sistemi elettrici e IoT, con competenze nel coordinamento.",
-    photo: "/team/gaetano-raia.png",
+    photo: "/team/gaetano-raia.webp",
     linkedin: "https://www.linkedin.com/in/gaetano-raia-446128387/",
     objectPosition: "center",
   },
@@ -115,21 +115,22 @@ const teamMembers = [
     role: "Logistica & Installazioni",
     description:
       "Esperienza pluriennale nella logistica e messa in opera di sensori wireless sul territorio italiano.",
-    photo: "/team/gianluca-ariante.png",
+    photo: "/team/gianluca-ariante.webp",
     objectPosition: "center",
   },
   {
     name: "Massimo Schiavoni",
-    role: "Responsabile Commerciale",
-    description: "Esperienza pluriennale nella logistica e messa in opera di sensori wireless.",
-    photo: "/team/massimo-schiavoni.png",
+    role: "Responsabile Commerciale Nord e Centro Italia",
+    description:
+      "Sviluppo commerciale e rapporti con Enti e clienti del Nord e Centro Italia.",
+    photo: "/team/massimo-schiavoni.webp",
   },
   {
     name: "Enza Miceli",
     role: "Responsabile Amministrativo",
     description:
       "Gestione amministrativa e contabile, con competenze in cash flow, forecast e budgeting aziendale.",
-    photo: "/team/enza-miceli.png",
+    photo: "/team/enza-miceli.webp",
     objectPosition: "center 20%",
   },
   {
@@ -137,7 +138,7 @@ const teamMembers = [
     role: "Ingegnere Meccatronico",
     description:
       "Specializzato in C++, progettazione hardware e meccanica, sicurezza informatica e sviluppo software.",
-    photo: "/team/biase-celano.jpg",
+    photo: "/team/biase-celano.webp",
     objectPosition: "center",
     linkedin: "https://www.linkedin.com/in/biase-celano/",
   },
@@ -255,15 +256,15 @@ const values = [
 ];
 
 const certifications = [
-  { name: "ISO 9001", logo: "/certifications/iso-9001.png" },
-  { name: "ISO 14001", logo: "/certifications/iso-14001.png" },
-  { name: "ISO 27001:2022", logo: "/certifications/iso-27001.png" },
+  { name: "ISO 9001", logo: "/certifications/iso-9001.webp" },
+  { name: "ISO 14001", logo: "/certifications/iso-14001.webp" },
+  { name: "ISO 27001:2022", logo: "/certifications/iso-27001.webp" },
   {
     name: "ACN Cloud Marketplace",
-    logo: "/certifications/acn.png",
+    logo: "/certifications/acn.webp",
     href: "https://www.acn.gov.it/portale/w/sa-6284",
   },
-  { name: "AGCM Rating Legalità", logo: "/certifications/agcm.png" },
+  { name: "AGCM Rating Legalità", logo: "/certifications/agcm.webp" },
 ];
 
 function SectionLabel({
@@ -295,8 +296,8 @@ export default function AziendaPage() {
         <div className="hero-glow hero-glow-two" />
 
         <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, transform: "translateY(12px)" }}
+          animate={{ opacity: 1, transform: "translateY(0px)" }}
           transition={{ duration: 0.6 }}
           className="relative mx-auto max-w-4xl px-6 text-center lg:px-8"
         >
@@ -320,9 +321,9 @@ export default function AziendaPage() {
       {/* CHI SIAMO */}
       <section className="py-24 lg:py-32">
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
+          initial={{ opacity: 0, transform: "translateY(12px)" }}
+          whileInView={{ opacity: 1, transform: "translateY(0px)" }}
+          viewport={{ once: true, amount: 0.05 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
           className="mx-auto max-w-3xl px-6 lg:px-8"
         >
@@ -367,9 +368,9 @@ export default function AziendaPage() {
       <section className="bg-[#f4f7f9] py-24 lg:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
+            initial={{ opacity: 0, transform: "translateY(12px)" }}
+            whileInView={{ opacity: 1, transform: "translateY(0px)" }}
+            viewport={{ once: true, amount: 0.05 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="max-w-3xl"
           >
@@ -396,15 +397,15 @@ export default function AziendaPage() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
+            initial={{ opacity: 0, transform: "translateY(12px)" }}
+            whileInView={{ opacity: 1, transform: "translateY(0px)" }}
+            viewport={{ once: true, amount: 0.05 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="mt-14 grid grid-cols-1 divide-y divide-slate-200 rounded-[28px] border border-slate-200 bg-white sm:grid-cols-2 sm:divide-y-0 sm:divide-x lg:grid-cols-4"
           >
             {experienceStats.map((stat) => (
               <div key={stat.label} className="px-6 py-10 text-center">
-                <div className="text-2xl font-black tracking-tight text-[#06131f]">
+                <div className="font-display text-2xl font-black text-[#06131f]">
                   {stat.value}
                 </div>
                 <div className="mt-2 text-sm font-medium text-slate-500">
@@ -420,9 +421,9 @@ export default function AziendaPage() {
       <section className="py-24 lg:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
+            initial={{ opacity: 0, transform: "translateY(12px)" }}
+            whileInView={{ opacity: 1, transform: "translateY(0px)" }}
+            viewport={{ once: true, amount: 0.05 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="grid gap-10 lg:grid-cols-2 lg:gap-14"
           >
@@ -461,9 +462,9 @@ export default function AziendaPage() {
             {teamMembers.map((member, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
+                initial={{ opacity: 0, transform: "translateY(12px)" }}
+                whileInView={{ opacity: 1, transform: "translateY(0px)" }}
+                viewport={{ once: true, amount: 0.05 }}
                 transition={{ duration: 0.5, delay: (index % 4) * 0.06 }}
                 className="overflow-hidden rounded-2xl border border-slate-200 bg-white transition duration-300 hover:-translate-y-1 hover:border-cyan-300"
               >
@@ -511,9 +512,9 @@ export default function AziendaPage() {
           </div>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
+            initial={{ opacity: 0, transform: "translateY(12px)" }}
+            whileInView={{ opacity: 1, transform: "translateY(0px)" }}
+            viewport={{ once: true, amount: 0.05 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {teamGroups.map((group) => {
@@ -541,9 +542,9 @@ export default function AziendaPage() {
 
         <div className="mt-16 bg-[#06131f] py-14 text-white">
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
+            initial={{ opacity: 0, transform: "translateY(12px)" }}
+            whileInView={{ opacity: 1, transform: "translateY(0px)" }}
+            viewport={{ once: true, amount: 0.05 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="mx-auto grid max-w-7xl gap-10 px-6 lg:grid-cols-[1fr_2fr] lg:items-center lg:gap-16 lg:px-8"
           >
@@ -570,7 +571,7 @@ export default function AziendaPage() {
                 return (
                   <div key={stat.label} className="text-center">
                     <Icon size={26} className="mx-auto text-cyan-300" />
-                    <p className="mt-3 text-xl font-black">{stat.value}</p>
+                    <p className="font-display mt-3 text-xl font-black">{stat.value}</p>
                     <p className="mt-1 text-sm leading-5 text-slate-400">
                       {stat.label}
                     </p>
@@ -586,9 +587,9 @@ export default function AziendaPage() {
       <section className="py-24 lg:py-32">
         <div className="mx-auto grid max-w-7xl gap-14 px-6 lg:grid-cols-2 lg:px-8">
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
+            initial={{ opacity: 0, transform: "translateY(12px)" }}
+            whileInView={{ opacity: 1, transform: "translateY(0px)" }}
+            viewport={{ once: true, amount: 0.05 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
             <SectionLabel>Mission</SectionLabel>
@@ -612,9 +613,9 @@ export default function AziendaPage() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
+            initial={{ opacity: 0, transform: "translateY(12px)" }}
+            whileInView={{ opacity: 1, transform: "translateY(0px)" }}
+            viewport={{ once: true, amount: 0.05 }}
             transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
           >
             <SectionLabel>Vision</SectionLabel>
@@ -647,9 +648,9 @@ export default function AziendaPage() {
       <section className="bg-[#f4f7f9] py-24 lg:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
+            initial={{ opacity: 0, transform: "translateY(12px)" }}
+            whileInView={{ opacity: 1, transform: "translateY(0px)" }}
+            viewport={{ once: true, amount: 0.05 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="max-w-3xl"
           >
@@ -668,9 +669,9 @@ export default function AziendaPage() {
               return (
                 <motion.div
                   key={card.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.3 }}
+                  initial={{ opacity: 0, transform: "translateY(12px)" }}
+                  whileInView={{ opacity: 1, transform: "translateY(0px)" }}
+                  viewport={{ once: true, amount: 0.05 }}
                   transition={{ duration: 0.5, delay: index * 0.08 }}
                   className="rounded-[28px] border border-slate-200 bg-white p-8 transition duration-300 hover:-translate-y-0.5 hover:border-cyan-300 hover:shadow-md"
                 >
@@ -701,9 +702,9 @@ export default function AziendaPage() {
       {/* TECNOLOGIA */}
       <section className="overflow-hidden bg-[#06131f] py-24 text-white lg:py-32">
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
+          initial={{ opacity: 0, transform: "translateY(12px)" }}
+          whileInView={{ opacity: 1, transform: "translateY(0px)" }}
+          viewport={{ once: true, amount: 0.05 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
           className="mx-auto max-w-4xl px-6 text-center lg:px-8"
         >
@@ -732,7 +733,7 @@ export default function AziendaPage() {
             ))}
           </div>
 
-          <p className="mt-14 text-2xl font-bold tracking-[-0.01em] text-white">
+          <p className="font-display mt-14 text-2xl font-bold text-white">
             Connettere il territorio significa comprenderlo meglio.
           </p>
         </motion.div>
@@ -742,9 +743,9 @@ export default function AziendaPage() {
       <section className="py-24 lg:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
+            initial={{ opacity: 0, transform: "translateY(12px)" }}
+            whileInView={{ opacity: 1, transform: "translateY(0px)" }}
+            viewport={{ once: true, amount: 0.05 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="max-w-3xl"
           >
@@ -762,9 +763,9 @@ export default function AziendaPage() {
               return (
                 <motion.div
                   key={value.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.3 }}
+                  initial={{ opacity: 0, transform: "translateY(12px)" }}
+                  whileInView={{ opacity: 1, transform: "translateY(0px)" }}
+                  viewport={{ once: true, amount: 0.05 }}
                   transition={{ duration: 0.5, delay: index * 0.08 }}
                   className="flex gap-5 rounded-2xl border border-slate-200 p-7 transition duration-300 hover:-translate-y-0.5 hover:border-cyan-300 hover:shadow-md"
                 >
@@ -789,9 +790,9 @@ export default function AziendaPage() {
       <section className="border-t border-slate-200 bg-[#f4f7f9] py-24 lg:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
+            initial={{ opacity: 0, transform: "translateY(12px)" }}
+            whileInView={{ opacity: 1, transform: "translateY(0px)" }}
+            viewport={{ once: true, amount: 0.05 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="flex flex-col items-start justify-between gap-10 lg:flex-row lg:items-center"
           >

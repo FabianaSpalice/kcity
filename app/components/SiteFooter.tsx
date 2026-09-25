@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
 import { X } from "lucide-react";
@@ -44,7 +45,9 @@ export default function SiteFooter() {
             <div>
               <p className="text-sm font-bold">K-City Factory</p>
               <p className="mt-3 text-sm leading-6 text-slate-400">
-                Via Giacomo Leopardi, 80040
+                Via Giacomo Leopardi, FC11
+                <br />
+                Struttura K-City, 80040
                 <br />
                 San Sebastiano al Vesuvio (NA)
                 <br />
@@ -99,7 +102,7 @@ export default function SiteFooter() {
   );
 }
 
-function LegalModal({
+export function LegalModal({
   children,
   onClose,
 }: {
@@ -123,7 +126,9 @@ function LegalModal({
     };
   }, [onClose]);
 
-  return (
+  // Portal to body: an animated (transformed) ancestor would otherwise become the
+  // containing block of this fixed overlay, e.g. when opened from the contact form.
+  return createPortal(
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -135,9 +140,9 @@ function LegalModal({
       <motion.div
         role="dialog"
         aria-modal="true"
-        initial={{ opacity: 0, y: 30, scale: 0.97 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, y: 20, scale: 0.98 }}
+        initial={{ opacity: 0, transform: "translateY(30px) scale(0.97)" }}
+        animate={{ opacity: 1, transform: "translateY(0px) scale(1)" }}
+        exit={{ opacity: 0, transform: "translateY(20px) scale(0.98)" }}
         transition={{ duration: 0.25 }}
         onClick={(e) => e.stopPropagation()}
         className="relative flex h-[80vh] w-[85vw] max-w-2xl flex-col overflow-hidden rounded-[28px] bg-white text-slate-950 shadow-2xl"
@@ -155,6 +160,7 @@ function LegalModal({
           {children}
         </div>
       </motion.div>
-    </motion.div>
+    </motion.div>,
+    document.body
   );
 }

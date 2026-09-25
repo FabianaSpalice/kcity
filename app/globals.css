@@ -1,5 +1,29 @@
 @import "tailwindcss";
 
+/* Font dei titoli nello stile del logo, generato da tools/kcity-font/build_font.py.
+   Un solo peso: il range evita che il browser simuli il grassetto. */
+@font-face {
+  font-family: "K-City Display";
+  src: url("/fonts/kcity-display.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+/* Classe font-display per numeri e frasi in evidenza fuori dai titoli. */
+@theme {
+  --font-display: "K-City Display", Arial, Helvetica, sans-serif;
+}
+
+/* Fuori da @layer: prevale sulle classi tracking-* dei titoli, perché la spaziatura
+   del font è già ottica (quella della scritta k·city). */
+h1,
+h2,
+h3,
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: 0;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #06131f;
@@ -69,27 +93,26 @@ body {
   background-size: 48px 48px;
 }
 
+/* Soft glows drawn with gradients: filter: blur() on large layers makes scrolling janky. */
 .hero-glow {
   position: absolute;
-  border-radius: 9999px;
   pointer-events: none;
-  filter: blur(90px);
 }
 
 .hero-glow-one {
-  width: 500px;
-  height: 500px;
-  top: -180px;
-  right: 5%;
-  background: rgba(34, 211, 238, 0.13);
+  width: 800px;
+  height: 800px;
+  top: -330px;
+  right: calc(5% - 150px);
+  background: radial-gradient(closest-side, rgba(34, 211, 238, 0.13) 40%, transparent);
 }
 
 .hero-glow-two {
-  width: 450px;
-  height: 450px;
-  bottom: -220px;
-  left: 15%;
-  background: rgba(14, 165, 233, 0.1);
+  width: 750px;
+  height: 750px;
+  bottom: -370px;
+  left: calc(15% - 150px);
+  background: radial-gradient(closest-side, rgba(14, 165, 233, 0.1) 40%, transparent);
 }
 
 .city-map-lines {

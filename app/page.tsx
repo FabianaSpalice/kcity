@@ -17,7 +17,6 @@ import {
   Gauge,
   Leaf,
   Loader2,
-  MonitorDot,
   ParkingCircle,
   Plus,
   RadioTower,
@@ -31,7 +30,8 @@ import {
 } from "lucide-react";
 import ItalyMap from "./components/ItalyMap";
 import ScrollToTopButton from "./components/ScrollToTopButton";
-import SiteFooter from "./components/SiteFooter";
+import SiteFooter, { LegalModal } from "./components/SiteFooter";
+import { PrivacyPolicyContent } from "./privacy-policy/privacy-policy-content";
 import SiteHeader from "./components/SiteHeader";
 
 type SolutionDetail = {
@@ -330,7 +330,7 @@ const territoryRegions = [
       "San Marzano sul Sarno",
       "Sant'Anastasia",
       "Volla",
-      "Vesuvio",
+      "Parco del Vesuvio",
     ],
   },
   {
@@ -391,15 +391,15 @@ const territoryHighlights = [
 ];
 
 const certifications = [
-  { name: "ISO 9001", logo: "/certifications/iso-9001.png" },
-  { name: "ISO 14001", logo: "/certifications/iso-14001.png" },
-  { name: "ISO 27001:2022", logo: "/certifications/iso-27001.png" },
+  { name: "ISO 9001", logo: "/certifications/iso-9001.webp" },
+  { name: "ISO 14001", logo: "/certifications/iso-14001.webp" },
+  { name: "ISO 27001:2022", logo: "/certifications/iso-27001.webp" },
   {
     name: "ACN Cloud Marketplace",
-    logo: "/certifications/acn.png",
+    logo: "/certifications/acn.webp",
     href: "https://www.acn.gov.it/portale/w/sa-6284",
   },
-  { name: "AGCM Rating Legalità", logo: "/certifications/agcm.png" },
+  { name: "AGCM Rating Legalità", logo: "/certifications/agcm.webp" },
 ];
 
 type FormStatus = "idle" | "sending" | "sent" | "error";
@@ -407,6 +407,7 @@ type FormStatus = "idle" | "sending" | "sent" | "error";
 function ContactForm() {
   const [status, setStatus] = useState<FormStatus>("idle");
   const [error, setError] = useState("");
+  const [privacyOpen, setPrivacyOpen] = useState(false);
   const submitting = useRef(false);
   const [values, setValues] = useState({
     name: "",
@@ -428,12 +429,13 @@ function ContactForm() {
     setStatus("sending");
     setError("");
     try {
-      const response = await fetch("/api/contact", {
+      const response = await fetch("/contact.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
       });
-      const result = await response.json();
+      // A PHP or server error page is not JSON: fall back to the generic message.
+      const result = await response.json().catch(() => ({}));
       if (!response.ok || !result.ok) {
         throw new Error(result.error || "Invio non riuscito. Riprova tra poco.");
       }
@@ -451,6 +453,7 @@ function ContactForm() {
     "w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-cyan-400 focus:bg-white focus:ring-2 focus:ring-cyan-400/30";
 
   return (
+    <>
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="hidden" aria-hidden="true">
         <label htmlFor="contact-website">Sito web</label>
@@ -535,6 +538,19 @@ function ContactForm() {
         </p>
       )}
 
+      <p className="text-xs leading-5 text-slate-500">
+        I dati inviati saranno usati solo per rispondere alla tua richiesta, come descritto
+        nell&rsquo;
+        <button
+          type="button"
+          onClick={() => setPrivacyOpen(true)}
+          className="font-semibold text-slate-700 underline hover:text-slate-950"
+        >
+          informativa privacy
+        </button>
+        .
+      </p>
+
       <button
         type="submit"
         disabled={status === "sending"}
@@ -553,6 +569,15 @@ function ContactForm() {
         )}
       </button>
     </form>
+    {/* Outside the form: the modal's close button has no type and would submit it. */}
+    <AnimatePresence>
+      {privacyOpen && (
+        <LegalModal onClose={() => setPrivacyOpen(false)}>
+          <PrivacyPolicyContent />
+        </LegalModal>
+      )}
+    </AnimatePresence>
+    </>
   );
 }
 
@@ -575,8 +600,8 @@ export default function Home() {
 
         <div className="relative mx-auto grid min-h-[calc(100vh-76px)] max-w-7xl items-center gap-16 px-6 py-20 lg:grid-cols-[1.05fr_.95fr] lg:px-8">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, transform: "translateY(12px)" }}
+            animate={{ opacity: 1, transform: "translateY(0px)" }}
             transition={{ duration: 0.7 }}
           >
             <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-cyan-300/20 bg-cyan-300/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300">
@@ -637,17 +662,17 @@ export default function Home() {
 
           {/* MOCKUP DASHBOARD */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.94, x: 30 }}
-            animate={{ opacity: 1, scale: 1, x: 0 }}
+            initial={{ opacity: 0, transform: "translateX(30px) scale(0.94)" }}
+            animate={{ opacity: 1, transform: "translateX(0px) scale(1)" }}
             transition={{ duration: 0.8, delay: 0.15 }}
             className="relative"
           >
-            <div className="absolute -inset-8 rounded-full bg-cyan-400/10 blur-3xl" />
+            <div className="absolute -inset-16 bg-[radial-gradient(closest-side,rgba(34,211,238,0.1)_50%,transparent)]" />
 
-            <div className="relative overflow-hidden rounded-[30px] border border-white/10 bg-white/[0.07] p-4 shadow-2xl backdrop-blur-xl">
+            <div className="relative overflow-hidden rounded-[30px] border border-white/10 bg-white/[0.07] p-4 shadow-2xl">
               <div className="relative min-h-[600px] overflow-hidden rounded-[22px] bg-[#0b1d2b]">
                 <Image
-                  src="/dashboard/heatmap-source.png"
+                  src="/dashboard/heatmap-source.webp"
                   alt="Mappa reale K-City con disponibilità posti e zone ad alta intensità"
                   fill
                   className="object-cover"
@@ -656,7 +681,7 @@ export default function Home() {
                       "grayscale(0.1) brightness(0.5) contrast(1.3) saturate(1.6)",
                   }}
                 />
-                <div className="absolute inset-0 bg-[#052235]/40 mix-blend-multiply" />
+                <div className="absolute inset-0 bg-[#052235]/45" />
 
                 <div className="pointer-events-none absolute inset-x-0 top-0 h-[230px] bg-gradient-to-b from-[#0b1d2b] via-[#0b1d2b]/75 to-transparent" />
                 <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[160px] bg-gradient-to-t from-[#0b1d2b] via-[#0b1d2b]/40 to-transparent" />
@@ -748,9 +773,9 @@ export default function Home() {
       {/* STATS */}
       {/* <section className="border-b border-slate-200 bg-white">
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
+          initial={{ opacity: 0, transform: "translateY(12px)" }}
+          whileInView={{ opacity: 1, transform: "translateY(0px)" }}
+          viewport={{ once: true, amount: 0.05 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
           className="mx-auto grid max-w-7xl grid-cols-1 divide-y divide-slate-200 px-6 sm:grid-cols-3 sm:divide-x sm:divide-y-0 lg:px-8"
         >
@@ -764,8 +789,8 @@ export default function Home() {
       <section id="azienda" className="scroll-mt-24 py-24 lg:py-32">
         <div className="mx-auto grid max-w-7xl gap-14 px-6 lg:grid-cols-2 lg:items-center lg:px-8">
           <motion.div
-            initial={{ opacity: 0, y: 25 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, transform: "translateY(12px)" }}
+            whileInView={{ opacity: 1, transform: "translateY(0px)" }}
             viewport={{ once: true }}
           >
             <Image
@@ -785,8 +810,8 @@ export default function Home() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 25 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, transform: "translateY(12px)" }}
+            whileInView={{ opacity: 1, transform: "translateY(0px)" }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
           >
@@ -798,20 +823,20 @@ export default function Home() {
              Trasformiamo i dati del territorio in strumenti concreti per migliorare mobilità, sicurezza, sostenibilità e qualità della vita.
             </p>
 
-            <a
+            <Link
               href="/azienda"
               className="mt-7 inline-flex items-center gap-2 font-bold text-slate-950"
             >
               Scopri K-City
               <ChevronRight size={18} />
-            </a>
+            </Link>
           </motion.div>
         </div>
 
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
+          initial={{ opacity: 0, transform: "translateY(12px)" }}
+          whileInView={{ opacity: 1, transform: "translateY(0px)" }}
+          viewport={{ once: true, amount: 0.05 }}
           transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
           className="mx-auto mt-14 grid max-w-7xl gap-4 px-6 sm:grid-cols-2 lg:grid-cols-4 lg:px-8"
         >
@@ -837,9 +862,9 @@ export default function Home() {
       >
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
+            initial={{ opacity: 0, transform: "translateY(12px)" }}
+            whileInView={{ opacity: 1, transform: "translateY(0px)" }}
+            viewport={{ once: true, amount: 0.05 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="max-w-3xl"
           >
@@ -864,9 +889,9 @@ export default function Home() {
               return (
                 <motion.article
                   key={solution.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.2 }}
+                  initial={{ opacity: 0, transform: "translateY(12px)" }}
+                  whileInView={{ opacity: 1, transform: "translateY(0px)" }}
+                  viewport={{ once: true, amount: 0.05 }}
                   transition={{ delay: index * 0.04 }}
                   {...(detail && {
                     role: "button",
@@ -911,9 +936,9 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="grid gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
             <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
+              initial={{ opacity: 0, transform: "translateY(12px)" }}
+              whileInView={{ opacity: 1, transform: "translateY(0px)" }}
+              viewport={{ once: true, amount: 0.05 }}
               transition={{ duration: 0.6, ease: "easeOut" }}
             >
               <SectionLabel>Territorio</SectionLabel>
@@ -930,7 +955,7 @@ export default function Home() {
 
               <div className="mt-8 flex flex-wrap items-center gap-6 sm:gap-8">
                 <div>
-                  <div className="text-5xl font-black tracking-tight text-cyan-600">
+                  <div className="font-display text-5xl font-black text-cyan-600">
                     {cities.length}+
                   </div>
                   <p className="mt-1 text-xs font-black uppercase leading-5 tracking-wide text-slate-500">
@@ -972,9 +997,9 @@ export default function Home() {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
+              initial={{ opacity: 0, transform: "translateY(12px)" }}
+              whileInView={{ opacity: 1, transform: "translateY(0px)" }}
+              viewport={{ once: true, amount: 0.05 }}
               transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
               className="relative flex h-[640px] items-center justify-center overflow-hidden rounded-[32px] border border-slate-200 bg-white p-8"
             >
@@ -985,9 +1010,9 @@ export default function Home() {
           </div>
 
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
+            initial={{ opacity: 0, transform: "translateY(12px)" }}
+            whileInView={{ opacity: 1, transform: "translateY(0px)" }}
+            viewport={{ once: true, amount: 0.05 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
             className="mt-14 flex items-center gap-4 rounded-full border border-slate-200 bg-white px-4 py-3"
           >
@@ -1030,9 +1055,9 @@ export default function Home() {
       {/* CERTIFICATIONS */}
       <section className="border-y border-slate-200 bg-slate-50 py-14">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
+          initial={{ opacity: 0, transform: "translateY(12px)" }}
+          whileInView={{ opacity: 1, transform: "translateY(0px)" }}
+          viewport={{ once: true, amount: 0.05 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
           className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-8 px-6 md:flex-row lg:px-8">
           <div className="flex items-center gap-4">
@@ -1079,9 +1104,9 @@ export default function Home() {
       {/* CTA */}
       <section className="px-6 pt-24 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
+          initial={{ opacity: 0, transform: "translateY(12px)" }}
+          whileInView={{ opacity: 1, transform: "translateY(0px)" }}
+          viewport={{ once: true, amount: 0.05 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
           className="mx-auto max-w-7xl overflow-hidden rounded-[36px] bg-cyan-400 px-7 py-16 sm:px-12 lg:px-16 lg:py-20">
           <div className="grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end">
@@ -1110,9 +1135,9 @@ export default function Home() {
       <section id="contatti" className="scroll-mt-20 px-6 py-24 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
+            initial={{ opacity: 0, transform: "translateY(12px)" }}
+            whileInView={{ opacity: 1, transform: "translateY(0px)" }}
+            viewport={{ once: true, amount: 0.05 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="grid gap-12 lg:grid-cols-[0.85fr_1.15fr]">
             <div>
@@ -1192,9 +1217,9 @@ function SolutionModal({
         role="dialog"
         aria-modal="true"
         aria-labelledby="solution-modal-title"
-        initial={{ opacity: 0, y: 40, scale: 0.97 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, y: 30, scale: 0.98 }}
+        initial={{ opacity: 0, transform: "translateY(40px) scale(0.97)" }}
+        animate={{ opacity: 1, transform: "translateY(0px) scale(1)" }}
+        exit={{ opacity: 0, transform: "translateY(30px) scale(0.98)" }}
         transition={{ duration: 0.25 }}
         onClick={(e) => e.stopPropagation()}
         className="relative w-full max-w-2xl overflow-hidden rounded-t-[28px] bg-white shadow-2xl sm:rounded-[28px]"
@@ -1315,7 +1340,7 @@ function Stat({ value, label }: { value: string; label: string }) {
 
   return (
     <div ref={ref} className="px-6 py-10 text-center">
-      <div className="text-4xl font-black tracking-tight text-[#06131f]">
+      <div className="font-display text-4xl font-black text-[#06131f]">
         {display}
       </div>
       <div className="mt-2 text-sm font-medium text-slate-500">{label}</div>
@@ -1333,7 +1358,7 @@ function DashboardCard({
   value: string;
 }) {
   return (
-    <div className="rounded-2xl border border-white/10 bg-[#0b1d2b]/70 p-4 backdrop-blur-md">
+    <div className="rounded-2xl border border-white/10 bg-[#0b1d2b]/90 p-4">
       <div className="flex items-center justify-between">
         <div className="flex h-9 w-9 items-center justify-center rounded-full border border-cyan-300/30 text-cyan-300">
           {icon}
@@ -1363,7 +1388,7 @@ function TechCard({
       <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#06131f] text-cyan-300">
         {icon}
       </div>
-      <div className="mt-5 text-xl font-black text-[#06131f]">{value}</div>
+      <div className="font-display mt-5 text-xl font-black text-[#06131f]">{value}</div>
       <div className="mt-1 text-sm text-slate-500">{label}</div>
     </div>
   );

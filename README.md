@@ -1,54 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sito K-City
 
-## Getting Started
+Sito Next.js esportato come sito statico (`output: "export"`) e pubblicato
+sull'hosting Aruba (Apache + PHP) via FTP.
+
+## Sviluppo
+
+```bash
+npm install
+npm run dev      # http://localhost:3000 (il form contatti qui non funziona: serve PHP)
+npm run build    # genera out/, cioè esattamente i file da pubblicare
+```
 
 ## Form contatti
 
-Il form invia a `/api/contact`, che consegna il messaggio tramite SMTP.
-Copia `.env.example` in `.env.local` e compila host, porta, utente, password
-e `CONTACT_FROM` (mittente autorizzato dal provider). Non pubblicare le credenziali.
-`CONTACT_TO` è inizialmente `supporto@k-city.it`.
-La porta 465 usa TLS diretto; le altre porte richiedono STARTTLS.
-Riferimento: https://nodemailer.com/smtp
+Il form invia a `/contact.php` ([public/contact.php](public/contact.php)), che
+consegna il messaggio via SMTP Aruba (`smtps.aruba.it:465`). Le credenziali
+stanno in `contact-config.php` nella root del server: non è in git ed è
+bloccato via `.htaccess`. Il modello è in
+[deploy/contact-config.example.php](deploy/contact-config.example.php).
+Lo script applica honeypot, validazione e un limite di 5 invii ogni 10 minuti
+per IP. Senza configurazione risponde 503 e il form mostra l'email alternativa.
 
-Configura le stesse variabili nell'hosting e riavvia/ridistribuisci il sito.
-Serve un hosting con runtime Node.js, non un export statico.
-Senza configurazione il form mostra un errore e il contatto email alternativo.
-Dopo la configurazione, verifica la ricezione di una richiesta e la funzione
-Rispondi (deve indirizzare al visitatore). L'esito positivo indica che il server
-SMTP ha accettato il messaggio, non garantisce il recapito nella casella.
-Il campo nascosto filtra bot elementari; configurare sul proprio hosting una
-limitazione delle richieste a `POST /api/contact` prima dell'esposizione pubblica.
+## Pubblicazione
 
-First, run the development server:
+Da WSL/Linux, con `lftp` installato (`sudo apt install lftp`):
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cp deploy/ftp.env.example deploy/ftp.env   # host e utente FTP, niente password
+deploy/deploy.sh smtp     # solo la prima volta o se cambia la password SMTP
+deploy/deploy.sh          # build + anteprima + conferma + mirror di out/
+deploy/deploy.sh check    # verifica le risposte del sito online
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Le password vengono chieste a prompt nascosto e passate a lftp tramite
+variabile d'ambiente: non finiscono in file, argomenti o cronologia.
+Il mirror usa `--delete`: sul server resta solo il contenuto di `out/`
+più `contact-config.php` (e gli eventuali file in `KEEP_EXTRA`).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Font dei titoli (K-City Display)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Titoli (`h1`, `h2`, `h3`) e numeri in evidenza (classe `font-display`) usano
+[public/fonts/kcity-display.woff2](public/fonts/kcity-display.woff2): le minuscole sono quelle della
+scritta k·city del logo, maiuscole, cifre, accentate e punteggiatura sono disegnate con gli stessi
+parametri. Il generatore non sta in questo repo ma accanto a quello delle targhette 3D:
+`C:\Users\sebli\Downloads\headphone-stand-redesk-model_files\signs\make_font.py`.
+Rilanciandolo (vedi l'intestazione dello script) aggiorna anche il `.woff2` di questo sito.

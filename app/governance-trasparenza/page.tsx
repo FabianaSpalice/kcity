@@ -75,8 +75,8 @@ export default function GovernanceTrasparenzaPage() {
 
       <article className="mx-auto max-w-5xl px-6 pt-[calc(76px+4rem)] pb-16">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, transform: "translateY(12px)" }}
+          animate={{ opacity: 1, transform: "translateY(0px)" }}
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-600">
@@ -101,9 +101,9 @@ export default function GovernanceTrasparenzaPage() {
               <motion.button
                 key={doc.title}
                 type="button"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
+                initial={{ opacity: 0, transform: "translateY(12px)" }}
+                whileInView={{ opacity: 1, transform: "translateY(0px)" }}
+                viewport={{ once: true, amount: 0.05 }}
                 transition={{ duration: 0.5, delay: index * 0.06 }}
                 onClick={() => setSelected(doc)}
                 className="group flex flex-col justify-between rounded-2xl border border-slate-200 p-6 text-left transition hover:border-cyan-300 hover:shadow-lg"
@@ -181,9 +181,9 @@ function DocumentModal({
         role="dialog"
         aria-modal="true"
         aria-labelledby="document-modal-title"
-        initial={{ opacity: 0, y: 30, scale: 0.97 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, y: 20, scale: 0.98 }}
+        initial={{ opacity: 0, transform: "translateY(30px) scale(0.97)" }}
+        animate={{ opacity: 1, transform: "translateY(0px) scale(1)" }}
+        exit={{ opacity: 0, transform: "translateY(20px) scale(0.98)" }}
         transition={{ duration: 0.25 }}
         onClick={(e) => e.stopPropagation()}
         className="relative flex h-[90vh] w-[90vw] max-w-5xl flex-col overflow-hidden rounded-[28px] bg-white shadow-2xl"
