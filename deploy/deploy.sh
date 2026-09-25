@@ -17,7 +17,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 [ -f deploy/ftp.env ] && . deploy/ftp.env
 
-: "${FTP_HOST:=ftp.k-city.eu}"
+: "${FTP_HOST:=ftp.k-city.it}"
 : "${FTP_DIR:=/www.k-city.eu}"
 # The FTP root hosts several sites: mirroring with --delete there would wipe them all.
 case "$FTP_DIR" in /|""|.|./) echo "FTP_DIR non può essere la root FTP" >&2; exit 1 ;; esac
@@ -36,11 +36,11 @@ ask_ftp() {
 
 # Run lftp commands on the server. ftp:list-options -a makes hidden files
 # (such as the old .htaccess) visible, so the mirror can delete them.
+# Keep -e on ONE line: lftp turns its arguments into an "open" command, and a newline
+# in -e makes it run the commands before connecting ("put: Not connected").
 lftp_run() {
-  lftp -u "$FTP_USER" --env-password -e "
-    set ftp:ssl-allow yes; set ssl:verify-certificate ${FTP_VERIFY_CERT:-yes};
-    set ftp:list-options -a; set net:max-retries 2; set net:timeout 20;
-    $1; bye" "$FTP_HOST"
+  local settings="set ftp:ssl-allow yes; set ssl:verify-certificate ${FTP_VERIFY_CERT:-yes}; set ftp:list-options -a; set net:max-retries 2; set net:timeout 20"
+  lftp -u "$FTP_USER" --env-password -e "$settings; $1; bye" "$FTP_HOST"
 }
 
 mirror_cmd() {
