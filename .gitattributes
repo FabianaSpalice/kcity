@@ -1,2 +1,4 @@
+# Fine riga Linux per tutti i file di testo: il repo vive in WSL ma si usa anche il git di Windows
+* text=auto eol=lf
 *.sh text eol=lf
 .htaccess text eol=lf
